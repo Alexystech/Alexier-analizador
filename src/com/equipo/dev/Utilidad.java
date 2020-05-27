@@ -1,8 +1,14 @@
 package com.equipo.dev;
 
 import java.util.LinkedList;
+import java.util.NoSuchElementException;
 
-public class Utilidad {
+import com.equipo.constantes.TextConstant;
+import com.equipo.constantes.Key;
+import com.equipo.constantes.Instrucciones;
+import com.equipo.interfaces.IUtilidad;
+
+public class Utilidad implements IUtilidad {
 
     public Utilidad(){}
 
@@ -144,16 +150,85 @@ public class Utilidad {
     }
 
     /**
-     * falta razonar esta funcionalidad (esta mal
-     * planeada tienes que ver el contexto y calcular
-     * exactamente que necesito despues)
+     * este metodo sirve para sacar las llaves
+     * de una linea de codigo que retorna una
+     * LinkedList con los valores numericos
+     * correspondientes para poder sacar el
+     * veredicto final de la linea
      * */
-    public LinkedList<Integer>lineasKey(LinkedList<String>tokens,String textoArchivo) {
-        LinkedList<String>lineasCodigo = lineasCodigo(textoArchivo);
+    public LinkedList<Integer> keyList(String lineaCodigo) {
+        TextConstant myTextConstants = new TextConstant();
+        Instrucciones myInstructions = new Instrucciones();
+        Key myKeys = new Key();
 
-        for (String linea : lineasCodigo) {
-            LinkedList<String>tokens2 = subLineTokens(linea);
+        LinkedList<String>tokensTemporal = subLineTokens(lineaCodigo);
+        LinkedList<Integer>keys = new LinkedList<Integer>();
+
+        for (String token : tokensTemporal) {
+            if (token.equals(myTextConstants.TEXT_PARENTESIS)) {
+                keys.add(myKeys.KEY_PARENTESIS);
+            } else if (token.equals(myTextConstants.TEXT_PARENTESIS_CIERRE)) {
+                keys.add(myKeys.KEY_PARENTESIS_CIERRE);
+            } else if (token.equals(myTextConstants.TEXT_MENOR_QUE)) {
+                keys.add(myKeys.KEY_MENOR_QUE);
+            } else if (token.equals(myTextConstants.TEXT_MAYOR_QUE)) {
+                keys.add(myKeys.KEY_MAYOR_QUE);
+            } else if (token.equals(myTextConstants.TEXT_IGUAL)) {
+                keys.add(myKeys.KEY_IGUAL);
+            } else if (token.equals(myTextConstants.TEXT_PUNTO_COMA)) {
+                keys.add(myKeys.KEY_PUNTO_COMA);
+            } else if (token.equals(myTextConstants.TEXT_COMA)) {
+                keys.add(myKeys.KEY_COMA);
+            } else if (token.equals(myTextConstants.TEXT_LLAVE)) {
+                keys.add(myKeys.KEY_LLAVE);
+            } else if (token.equals(myTextConstants.TEXT_LLAVE_CIERRE)) {
+                keys.add(myKeys.KEY_LLAVE_CIERRE);
+            } else if (token.equals(myTextConstants.TEXT_SUMA)) {
+                keys.add(myKeys.KEY_SUMA);
+            } else if (token.equals(myTextConstants.TEXT_RESTA)) {
+                keys.add(myKeys.KEY_RESTA);
+            } else if (token.equals(myTextConstants.TEXT_MULTIPLICACION)) {
+                keys.add(myKeys.KEY_MULTIPLICACION);
+            } else if (token.equals(myTextConstants.TEXT_DIVISION)) {
+                keys.add(myKeys.KEY_DIVISION);
+            } else if (token.equals(myTextConstants.TEXT_HASHTAG)) {
+                keys.add(myKeys.KEY_HASHTAG);
+            } else if (token.equals(myInstructions.IMPRIMIR)) {
+                keys.add(myKeys.KEY_IMPRIMIR);
+            } else {
+                int valorAleatorio = (int) (Math.random() * 80) + 21;
+                keys.add(valorAleatorio);
+            }
         }
-        return null;
+        return  keys;
     }
+
+    public boolean veredictoFinal(LinkedList<Integer>keyList) {
+        boolean tieneError = false;
+
+        try{
+            if (keyList.getFirst().equals(6)) {
+                tieneError = evaluarImprimir(keyList);
+            }
+        } catch (NoSuchElementException e) {
+            tieneError = false;
+        }
+
+        return tieneError;
+    }
+
+    public boolean evaluarImprimir(LinkedList<Integer>keyList) {
+        if (keyList.size() < 4) {
+            return true;
+        } else {
+            if (keyList.getFirst().equals(6) && keyList.get(1).equals(10)
+                && keyList.getLast().equals(15) && keyList.get(keyList.size()-2)
+                    .equals(11)) {
+                return false;
+            } else {
+                return true;
+            }
+        }
+    }
+
 }
