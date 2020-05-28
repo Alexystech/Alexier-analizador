@@ -10,6 +10,10 @@ import com.equipo.interfaces.IUtilidad;
 
 public class Utilidad implements IUtilidad {
 
+    private final TextConstant myTextConstants = new TextConstant();
+    private final Instrucciones myInstructions = new Instrucciones();
+    private final Key myKeys = new Key();
+
     public Utilidad(){}
 
     /**
@@ -157,9 +161,6 @@ public class Utilidad implements IUtilidad {
      * veredicto final de la linea
      * */
     public LinkedList<Integer> keyList(String lineaCodigo) {
-        TextConstant myTextConstants = new TextConstant();
-        Instrucciones myInstructions = new Instrucciones();
-        Key myKeys = new Key();
 
         LinkedList<String>tokensTemporal = subLineTokens(lineaCodigo);
         LinkedList<Integer>keys = new LinkedList<Integer>();
@@ -195,8 +196,14 @@ public class Utilidad implements IUtilidad {
                 keys.add(myKeys.KEY_HASHTAG);
             } else if (token.equals(myInstructions.IMPRIMIR)) {
                 keys.add(myKeys.KEY_IMPRIMIR);
+            } else if (token.equals(myInstructions.STDIO)) {
+                keys.add(myKeys.KEY_STDIO);
+            } else if (token.equals(myInstructions.INCLUDE)) {
+                keys.add(myKeys.KEY_INCLUDE);
+            } else if (token.equals(myInstructions.STDLIB)) {
+                keys.add(myKeys.KEY_STDLIB);
             } else {
-                int valorAleatorio = (int) (Math.random() * 80) + 21;
+                int valorAleatorio = (int) (Math.random() * 200) + 61;
                 keys.add(valorAleatorio);
             }
         }
@@ -207,8 +214,16 @@ public class Utilidad implements IUtilidad {
         boolean tieneError = false;
 
         try{
-            if (keyList.getFirst().equals(6)) {
+            if (keyList.getFirst().equals(myKeys.KEY_IMPRIMIR)) {
                 tieneError = evaluarImprimir(keyList);
+            } else if (keyList.getFirst().equals(myKeys.KEY_HASHTAG) &&
+                        keyList.get(keyList.size()-2).equals(myKeys.KEY_STDIO)) {
+                tieneError = evaluarLibreriaStdio(keyList);
+            } else if (keyList.getFirst().equals(myKeys.KEY_HASHTAG) &&
+                        keyList.get(keyList.size()-2).equals(myKeys.KEY_STDLIB)) {
+                tieneError = evaluarLibreriaStdlib(keyList);
+            } else {
+                tieneError = true;
             }
         } catch (NoSuchElementException e) {
             tieneError = false;
@@ -217,13 +232,47 @@ public class Utilidad implements IUtilidad {
         return tieneError;
     }
 
+    public boolean evaluarLibreriaStdlib(LinkedList<Integer>keyList) {
+        if (keyList.size() != 5) {
+            return true;
+        } else {
+            if (keyList.getFirst().equals(myKeys.KEY_HASHTAG) &&
+                keyList.get(1).equals(myKeys.KEY_INCLUDE) &&
+                keyList.get(2).equals(myKeys.KEY_MENOR_QUE) &&
+                keyList.get(keyList.size()-2).equals(myKeys.KEY_STDLIB) &&
+                keyList.getLast().equals(myKeys.KEY_MAYOR_QUE)) {
+                return false;
+            } else {
+                return true;
+            }
+        }
+    }
+
+    public boolean evaluarLibreriaStdio(LinkedList<Integer>keyList) {
+        if (keyList.size() != 5) {
+            return true;
+        } else {
+            if (keyList.getFirst().equals(myKeys.KEY_HASHTAG) &&
+                keyList.get(1).equals(myKeys.KEY_INCLUDE) &&
+                keyList.get(2).equals(myKeys.KEY_MENOR_QUE) &&
+                keyList.get(keyList.size()-2).equals(myKeys.KEY_STDIO) &&
+                keyList.getLast().equals(myKeys.KEY_MAYOR_QUE)) {
+                return false;
+            } else {
+                return true;
+            }
+        }
+    }
+
     public boolean evaluarImprimir(LinkedList<Integer>keyList) {
         if (keyList.size() < 4) {
             return true;
         } else {
-            if (keyList.getFirst().equals(6) && keyList.get(1).equals(10)
-                && keyList.getLast().equals(15) && keyList.get(keyList.size()-2)
-                    .equals(11)) {
+            if (keyList.getFirst().equals(myKeys.KEY_IMPRIMIR) &&
+                    keyList.get(1).equals(myKeys.KEY_PARENTESIS) &&
+                    keyList.getLast().equals(myKeys.KEY_PUNTO_COMA) &&
+                    keyList.get(keyList.size()-2)
+                    .equals(myKeys.KEY_PARENTESIS_CIERRE)) {
                 return false;
             } else {
                 return true;

@@ -1,9 +1,9 @@
-#include<iostream>
+#include<stdio.h>
+#include<stdlib.h>
+
 int main(){
 
-    printf("texto de prueva");
-
-    printf("texto");
+    printf("");
 
     return 0;
 }
