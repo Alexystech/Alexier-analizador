@@ -202,6 +202,10 @@ public class Utilidad implements IUtilidad {
                 keys.add(myKeys.KEY_INCLUDE);
             } else if (token.equals(myInstructions.STDLIB)) {
                 keys.add(myKeys.KEY_STDLIB);
+            } else if (token.equals(myInstructions.INT_MAIN)) {
+                keys.add(myKeys.KEY_INT_MAIN);
+            } else if (token.equals(myInstructions.RETURN)) {
+                keys.add(myKeys.KEY_RETURN);
             } else {
                 int valorAleatorio = (int) (Math.random() * 200) + 61;
                 keys.add(valorAleatorio);
@@ -222,6 +226,14 @@ public class Utilidad implements IUtilidad {
             } else if (keyList.getFirst().equals(myKeys.KEY_HASHTAG) &&
                         keyList.get(keyList.size()-2).equals(myKeys.KEY_STDLIB)) {
                 tieneError = evaluarLibreriaStdlib(keyList);
+            } else if (keyList.getFirst().equals(myKeys.KEY_INT_MAIN)) {
+                tieneError = evaluarMetodoPrincipal(keyList);
+            } else if (keyList.getFirst().equals(myKeys.KEY_RETURN)) {
+                tieneError = evaluarReturn(keyList);
+            } else if (keyList.getFirst().equals(myKeys.KEY_LLAVE)) {
+                tieneError = evaluarLlaveApertura(keyList);
+            } else if (keyList.getFirst().equals(myKeys.KEY_LLAVE_CIERRE)) {
+                tieneError = evaluarLlaveCierre(keyList);
             } else {
                 tieneError = true;
             }
@@ -230,6 +242,53 @@ public class Utilidad implements IUtilidad {
         }
 
         return tieneError;
+    }
+
+    public boolean evaluarLlaveCierre(LinkedList<Integer>keyLis) {
+        if (keyLis.size() > 1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean evaluarLlaveApertura(LinkedList<Integer>keyList) {
+        if (keyList.size() > 1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean evaluarReturn(LinkedList<Integer>keyList) {
+        if (keyList.size() < 2) {
+            return true;
+        } else {
+            if (keyList.getFirst().equals(myKeys.KEY_RETURN) &&
+                keyList.get(1).equals(myKeys.KEY_PUNTO_COMA)) {
+                return false;
+            } else {
+                return true;
+            }
+        }
+    }
+
+    public boolean evaluarMetodoPrincipal(LinkedList<Integer>keyList) {
+        if (keyList.size() < 3) {
+            return true;
+        } else {
+            if (keyList.getFirst().equals(myKeys.KEY_INT_MAIN) &&
+                keyList.get(1).equals(myKeys.KEY_PARENTESIS) &&
+                    ((keyList.getLast().equals(myKeys.KEY_LLAVE) &&
+                            keyList.get(keyList.size()-2)
+                                    .equals(myKeys.KEY_PARENTESIS_CIERRE)) ||
+                            keyList.getLast().equals(myKeys.KEY_PARENTESIS_CIERRE)
+                    )) {
+                return false;
+            } else {
+                return true;
+            }
+        }
     }
 
     public boolean evaluarLibreriaStdlib(LinkedList<Integer>keyList) {

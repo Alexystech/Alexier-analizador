@@ -5,6 +5,8 @@ public class Key {
     public final int KEY_INCLUDE        = 32;
     public final int KEY_STDIO          = 33;
     public final int KEY_STDLIB         = 34;
+    public final int KEY_INT_MAIN       = 35;
+    public final int KEY_RETURN         = 36;
 
     public final int KEY_SUMA           = 1;
     public final int KEY_RESTA          = 2;

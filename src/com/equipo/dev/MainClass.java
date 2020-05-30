@@ -1,6 +1,6 @@
 package com.equipo.dev;
 
-import javax.swing.*;
+import javax.swing.JOptionPane;
 import java.util.LinkedList;
 
 public class MainClass {
@@ -15,11 +15,8 @@ public class MainClass {
 
         System.out.println(editText);
         System.out.println("------------------------------");
-        String tokensTemporal = "";
         for (String token : tokens) {
             System.out.println(token);
-            tokensTemporal += token;
-            tokensTemporal += "\n";
         }
 
         System.out.println("*--------------------------------------*");
@@ -39,11 +36,6 @@ public class MainClass {
                 JOptionPane.showMessageDialog(null,"error en la linea "+
                         contLineas);
             }
-        }
-
-        System.out.println("+-------------------------------------------+");
-        for (int x : keyList) {
-            System.out.println(x);
         }
 
     }
