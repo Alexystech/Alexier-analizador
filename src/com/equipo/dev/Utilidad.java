@@ -352,7 +352,8 @@ public class Utilidad implements IUtilidad {
                     if (keyList.get(indices[0]+1).equals(myKeys.KEY_PARENTESIS_CIERRE)) {
                         return false;
                     } else if (keyList.get(indices[0]+1).equals(myKeys.KEY_COMA) &&
-                            keyList.get(indices[0]+2).equals(myKeys.KEY_RANDOM)) {
+                            keyList.get(indices[0]+2).equals(myKeys.KEY_RANDOM) &&
+                            keyList.get(indices[0]+3).equals(myKeys.KEY_PARENTESIS_CIERRE)) {
                         return false;
                     } else {
                         return true;
