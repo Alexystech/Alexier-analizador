@@ -26,6 +26,7 @@ public class TextConstant {
     public final String TEXT_MULTIPLICACION     = "*";
     public final String TEXT_DIVISION           = "/";
     public final String TEXT_HASHTAG            = "#";
+    public final String TEXT_COMILLA_DOBLE      = Character.toString('"');
 
     public TextConstant(){}
 }

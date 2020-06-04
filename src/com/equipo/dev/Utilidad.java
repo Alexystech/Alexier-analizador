@@ -30,7 +30,8 @@ public class Utilidad implements IUtilidad {
                     textoArchivo.charAt(x) == '<' || textoArchivo.charAt(x) == '>' ||
                     textoArchivo.charAt(x) == '=' || textoArchivo.charAt(x) == ';' ||
                     textoArchivo.charAt(x) == ',' || textoArchivo.charAt(x) == '{' ||
-                    textoArchivo.charAt(x) == '}' || textoArchivo.charAt(x) == '#') {
+                    textoArchivo.charAt(x) == '}' || textoArchivo.charAt(x) == '#' ||
+                    textoArchivo.charAt(x) == '"') {
                 textEdit += " ";
                 textEdit += textoArchivo.charAt(x);
                 textEdit += " ";
@@ -57,7 +58,8 @@ public class Utilidad implements IUtilidad {
                     editText.charAt(x) == '<' || editText.charAt(x) == '>' ||
                     editText.charAt(x) == '=' || editText.charAt(x) == ';' ||
                     editText.charAt(x) == ',' || editText.charAt(x) == '{' ||
-                    editText.charAt(x) == '}' || editText.charAt(x) == '#') {
+                    editText.charAt(x) == '}' || editText.charAt(x) == '#' ||
+                    editText.charAt(x) == '"') {
 
                 tokens.add(textoTemporal);
                 textoTemporal = Character.toString(editText.charAt(x));
@@ -91,7 +93,8 @@ public class Utilidad implements IUtilidad {
                     tokenText.charAt(x) == '<' || tokenText.charAt(x) == '>' ||
                     tokenText.charAt(x) == '=' || tokenText.charAt(x) == ';' ||
                     tokenText.charAt(x) == ',' || tokenText.charAt(x) == '{' ||
-                    tokenText.charAt(x) == '}' || tokenText.charAt(x) == '#') {
+                    tokenText.charAt(x) == '}' || tokenText.charAt(x) == '#' ||
+                    tokenText.charAt(x) == '"') {
                 hitsSaltosLinea++;
                 if (hitsSaltosLinea > 1) {
                     textoTemporal = Character.toString(tokenText.charAt(x));
@@ -206,9 +209,10 @@ public class Utilidad implements IUtilidad {
                 keys.add(myKeys.KEY_INT_MAIN);
             } else if (token.equals(myInstructions.RETURN)) {
                 keys.add(myKeys.KEY_RETURN);
+            } else if (token.equals(myTextConstants.TEXT_COMILLA_DOBLE)) {
+                keys.add(myKeys.KEY_COMILLA_DOBLE);
             } else {
-                int valorAleatorio = (int) (Math.random() * 200) + 61;
-                keys.add(valorAleatorio);
+                keys.add(myKeys.KEY_RANDOM);
             }
         }
         return  keys;
@@ -324,19 +328,75 @@ public class Utilidad implements IUtilidad {
     }
 
     public boolean evaluarImprimir(LinkedList<Integer>keyList) {
-        if (keyList.size() < 4) {
+        if (keyList.size() < 6) {
             return true;
-        } else {
+        } else if (keyList.size() == 6) {
             if (keyList.getFirst().equals(myKeys.KEY_IMPRIMIR) &&
                     keyList.get(1).equals(myKeys.KEY_PARENTESIS) &&
-                    keyList.getLast().equals(myKeys.KEY_PUNTO_COMA) &&
-                    keyList.get(keyList.size()-2)
-                    .equals(myKeys.KEY_PARENTESIS_CIERRE)) {
+                    keyList.get(2).equals(myKeys.KEY_COMILLA_DOBLE) &&
+                    keyList.get(3).equals(myKeys.KEY_COMILLA_DOBLE) &&
+                    keyList.get(4).equals(myKeys.KEY_PARENTESIS_CIERRE) &&
+                    keyList.getLast().equals(myKeys.KEY_PUNTO_COMA)) {
                 return false;
             } else {
                 return true;
             }
+        } else {
+            if (keyList.getFirst().equals(myKeys.KEY_IMPRIMIR) &&
+                    keyList.get(1).equals(myKeys.KEY_PARENTESIS) &&
+                    keyList.get(2).equals(myKeys.KEY_COMILLA_DOBLE) &&
+                    keyList.get(keyList.size()-2).equals(myKeys.KEY_PARENTESIS_CIERRE) &&
+                    keyList.getLast().equals(myKeys.KEY_PUNTO_COMA)) {
+                if (tieneDosComillasDobles(keyList)) {
+                    int[] indices = indices(keyList);
+                    if (keyList.get(indices[0]+1).equals(myKeys.KEY_PARENTESIS_CIERRE)) {
+                        return false;
+                    } else if (keyList.get(indices[0]+1).equals(myKeys.KEY_COMA) &&
+                            keyList.get(indices[0]+2).equals(myKeys.KEY_RANDOM)) {
+                        return false;
+                    } else {
+                        return true;
+                    }
+                } else {
+                    return true;
+                }
+            } else {
+                return true;
+            }
         }
+    }
+
+    public boolean tieneDosComillasDobles(LinkedList<Integer>keyList) {
+        int contador = 0;
+        for (int temporal : keyList) {
+            if (temporal == myKeys.KEY_COMILLA_DOBLE) {
+                contador++;
+            }
+        }
+        if (contador == 2) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public int[] indices(LinkedList<Integer>keyList) {
+        int[] indices = new int[2];
+        int contador = 0;
+        int contadorComilla = 0;
+
+        for (int temporal : keyList) {
+            if (temporal == myKeys.KEY_COMILLA_DOBLE) {
+                contadorComilla++;
+            }
+            if (contadorComilla == 2) {
+                indices[0] = contador;
+                break;
+            }
+            contador++;
+        }
+        indices[1] = keyList.size()-2;
+        return indices;
     }
 
 }

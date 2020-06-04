@@ -23,6 +23,8 @@ public class Key {
     public final int KEY_LLAVE              = 18;
     public final int KEY_LLAVE_CIERRE       = 19;
     public final int KEY_HASHTAG            = 20;
+    public final int KEY_COMILLA_DOBLE      = 21;
 
+    public final int KEY_RANDOM = 61;
     public Key(){}
 }

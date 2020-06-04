@@ -1,9 +1,6 @@
 #include<stdio.h>
 #include<stdlib.h>
-
-int main(void){
-
-    printf("texto de prueva");
-
+int main(){
+    printf("");
     return 0;
 }
