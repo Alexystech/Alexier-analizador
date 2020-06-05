@@ -351,10 +351,12 @@ public class Utilidad implements IUtilidad {
                     int[] indices = indices(keyList);
                     if (keyList.get(indices[0]+1).equals(myKeys.KEY_PARENTESIS_CIERRE)) {
                         return false;
-                    } else if (keyList.get(indices[0]+1).equals(myKeys.KEY_COMA) &&
-                            keyList.get(indices[0]+2).equals(myKeys.KEY_RANDOM) &&
-                            keyList.get(indices[0]+3).equals(myKeys.KEY_PARENTESIS_CIERRE)) {
-                        return false;
+                    } else if (indicesPares(indices)) {
+                        if (partePrintf(keyList,indices)) {
+                            return true;
+                        } else {
+                            return false;
+                        }
                     } else {
                         return true;
                     }
@@ -398,6 +400,31 @@ public class Utilidad implements IUtilidad {
         }
         indices[1] = keyList.size()-2;
         return indices;
+    }
+
+    public boolean partePrintf(LinkedList<Integer>keyList,int[]indices) {
+        int index1 = indices[0] + 1;
+        int index2 = indices[0] + 2;
+        boolean veredicto = false;
+        while (index2 < indices[1]) {
+            if (keyList.get(index1) != myKeys.KEY_COMA ||
+                keyList.get(index2) != myKeys.KEY_RANDOM) {
+                veredicto = true;
+                break;
+            }
+            index1 += 2;
+            index2 += 2;
+        }
+        return veredicto;
+    }
+
+    public boolean indicesPares(int[]indices){
+        int valor = indices[1] - (indices[0] +1);
+        if (valor%2 == 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 }

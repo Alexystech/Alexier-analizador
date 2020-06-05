@@ -1,6 +1,6 @@
 #include<stdio.h>
 #include<stdlib.h>
 int main(){
-    printf("texto",texxxxx);
+    printf("texto prueva",var);
     return 0;
 }
