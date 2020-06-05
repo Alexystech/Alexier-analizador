@@ -1,6 +1,10 @@
 #include<stdio.h>
 #include<stdlib.h>
-int main(){
-    printf("texto prueva",var);
+int main(void)
+{
+    printf("texto prueva",txt,lala,fefe);
+    printf("texto prueva");
+    printf("texto prueva");
+    printf("texto prueva");
     return 0;
 }

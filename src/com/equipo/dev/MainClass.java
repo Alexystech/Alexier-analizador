@@ -23,6 +23,7 @@ public class MainClass {
         LinkedList<String>lineasCodigo = myUtilities.lineasCodigo(textFile);
         LinkedList<Integer>keyList = new LinkedList<>();
         boolean tieneError = false;
+        boolean sinErrores = true;
         int contLineas = 0;
 
         for (String linea : lineasCodigo) {
@@ -35,7 +36,12 @@ public class MainClass {
             if (tieneError) {
                 JOptionPane.showMessageDialog(null,"error en la linea "+
                         contLineas);
+                sinErrores = false;
             }
+        }
+
+        if (sinErrores) {
+            JOptionPane.showMessageDialog(null,"sin errores");
         }
 
     }
