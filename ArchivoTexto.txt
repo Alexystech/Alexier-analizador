@@ -2,9 +2,6 @@
 #include<stdlib.h>
 int main(void)
 {
-    printf("texto prueva",txt,lala,fefe);
-    printf("texto prueva");
-    printf("texto prueva");
-    printf("texto prueva");
+    printf("hola %d"dia);
     return 0;
 }
